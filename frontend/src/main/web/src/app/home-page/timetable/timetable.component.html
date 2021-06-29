@@ -1,0 +1,11 @@
+<div class="container">
+  <h3 class="text-center text-white pt-5">Timetable</h3>
+  <div class="row justify-content-center">
+    <div class="card">
+      <div class="card-header">Timetable</div>
+      <div class="card-body">
+        <full-calendar #fullCalendarComponent [events]="calendarEvents" (eventClick)="handleDateClick($event)" defaultView="dayGridMonth" [plugins]="calendarPlugins"></full-calendar>
+      </div>
+    </div>
+  </div>
+</div>

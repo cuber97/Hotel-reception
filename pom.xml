@@ -13,6 +13,9 @@
         <version>2.0.4.RELEASE</version>
         <relativePath />
     </parent>
+    <properties>
+        <java.version>8</java.version>
+    </properties>
     <modules>
         <module>backend</module>
         <module>frontend</module>

@@ -1,0 +1,93 @@
+<p-toast position="center" key="c" (onClose)="onReject()" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="message">
+    <div style="text-align: center;">
+      <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+      <h3>{{message.summary}}</h3>
+      <p>{{message.detail}}</p>
+    </div>
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-6">
+        <button type="button" pButton (click)="onConfirm()" label="Yes" class="ui-button-success"></button>
+      </div>
+      <div class="ui-g-6">
+        <button type="button" pButton (click)="onReject()" label="No" class="ui-button-secondary"></button>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
+<div *ngIf="currentUser.role === 'CUSTOMER'" class="container">
+  <h3 class="text-center text-white pt-5">Complaints</h3>
+  <div class="row justify-content-center">
+    <div class="card">
+      <div class="card-header">Complaints</div>
+      <div class="card-body">
+        <p-table [columns]="customercols" [value]="complaints" [scrollable]="true">
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns" style="width:200px">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns">
+                {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-complaint>
+            <tr>
+              <td>{{complaint.creationDate | date:'short'}}</td>
+              <td>{{complaint.lastUpdateDate | date:'short'}}</td>
+              <td style="text-align: center">
+                <span><button class="btn btn-primary btn-sm" [routerLink]="complaint.customerId">Update</button></span>
+              </td>
+              <td style="text-align: center">
+                <button class="btn btn-danger btn-sm" (click)="onComplaintDelete(complaint.customerId)">Delete</button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <button class="mt-3 btn btn-success btn-sm" (click)="onCustomerAdd()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="currentUser.role === 'WORKER'" class="container">
+  <h3 class="text-center text-white pt-5">Complaints</h3>
+  <div class="row justify-content-center">
+    <div class="card">
+      <div class="card-header">Complaints</div>
+      <div class="card-body">
+        <p-table [columns]="workerCols" [value]="complaints" [scrollable]="true">
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns" style="width:180px">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns">
+                {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-complaint>
+            <tr>
+              <td>{{complaint.creationDate | date:'short'}}</td>
+              <td>{{complaint.lastUpdateDate | date:'short'}}</td>
+              <td>{{complaint.customer.firstName}}</td>
+              <td>{{complaint.customer.lastName}}</td>
+              <td>{{complaint.customer.email}}</td>
+              <td style="text-align: center">
+                <span><button class="btn btn-primary btn-sm" [routerLink]="complaint.complaintId">Read</button></span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>
+

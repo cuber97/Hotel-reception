@@ -1,0 +1,21 @@
+.card {
+  min-width: 600px;
+  margin-bottom: 20px;
+}
+
+::ng-deep body .ui-datepicker .ui-datepicker-header .ui-datepicker-title {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  color: black;
+}
+
+::ng-deep .ui-datepicker .ui-datepicker-group {
+  background-color: white;
+}
+
+::ng-deep .ui-dropdown-items-wrapper {
+  border: 1px solid grey;
+  opacity: 1;
+  background-color: white;
+}

@@ -1,0 +1,140 @@
+<p-toast position="center" key="c" (onClose)="onReject()" [modal]="false" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="message">
+    <div style="text-align: center">
+      <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+      <h3>{{message.summary}}</h3>
+      <p>{{message.detail}}</p>
+    </div>
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-6">
+        <button type="button" pButton (click)="onConfirm()" label="Yes" class="ui-button-success"></button>
+      </div>
+      <div class="ui-g-6">
+        <button type="button" pButton (click)="onReject()" label="No" class="ui-button-secondary"></button>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
+<div class="container">
+  <h3 class="text-center text-white pt-5">Update room</h3>
+  <div class="row justify-content-center">
+    <div class="card">
+      <div class="card-header">Room</div>
+      <div class="card-body">
+        <form #updateRoomForm="ngForm" [class.was-validated]="submitted" (ngSubmit)="showConfirm()">
+          <div class="form-group row">
+            <label for="number" class="col-md-4 col-form-label text-md-right">Number</label>
+            <div class="col-md-6">
+              <input
+                required
+                type="number"
+                id="number"
+                class="form-control"
+                name="number"
+                min="1"
+                max="300"
+                [(ngModel)]="room.number">
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="floor" class="col-md-4 col-form-label text-md-right">Floor</label>
+            <div class="col-md-6">
+              <select
+                required
+                type="text"
+                id="floor"
+                class="form-control"
+                name="floor"
+                [(ngModel)]="room.floor">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Choose Floor.</div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="maxPeopleCapacity" class="col-md-4 col-form-label text-md-right">Max people capacity</label>
+            <div class="col-md-6">
+              <select
+                required
+                type="text"
+                id="maxPeopleCapacity"
+                class="form-control"
+                name="maxPeopleCapacity"
+                [(ngModel)]="room.maxPeopleCapacity">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="dailyRateForPerson" class="col-md-4 col-form-label text-md-right">Daily rate for
+              person</label>
+            <div class="col-md-6">
+              <input
+                required
+                type="text"
+                id="dailyRateForPerson"
+                class="form-control"
+                name="dailyRateForPerson"
+                [(ngModel)]="room.dailyRateForPerson">
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="photo" class="col-md-4 col-form-label text-md-right">Upload photo</label>
+            <!--              <input-->
+            <!--                required-->
+            <!--                type="file"-->
+            <!--                id="photo"-->
+            <!--                class="form-control"-->
+            <!--                accpet="image/*"-->
+            <!--                name="photo"-->
+            <!--                style="height: 100%"-->
+            <!--                (change)="onSelectFile($event)"-->
+            <!--                [(ngModel)]="room.dailyRateForPerson">-->
+            <div>
+              <p-fileUpload
+                  #fileUpload
+                  name="updatedfile[]"
+                  customUpload="true"
+                  id="photo"
+                  accept="image/*"
+                  (uploadHandler)="onUploadFile($event)">
+                <ng-template pTemplate="content">
+                  <ul *ngIf="uploadedFile">
+                    <li>{{uploadedFile.name}} - {{uploadedFile.size}} bytes</li>
+                  </ul>
+                </ng-template>
+              </p-fileUpload>
+            </div>
+          </div>
+          <div class="col-md-6 offset-md-4">
+            <button type="submit" class="btn btn-primary" routerLink="../">
+              Back
+            </button>
+            <button type="submit" class="btn btn-primary ml-4">
+              <span [ngClass]="{'spinner-border': pending, 'spinner-border-sm': pending}"></span>
+              Add
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

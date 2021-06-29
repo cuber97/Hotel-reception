@@ -1,0 +1,121 @@
+<p-toast position="center" key="c" (onClose)="onReject()" [modal]="false" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="message">
+    <div style="text-align: center">
+      <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+      <h3>{{message.summary}}</h3>
+      <p>{{message.detail}}</p>
+    </div>
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-6">
+        <button type="button" pButton (click)="onConfirm()" label="Yes" class="ui-button-success"></button>
+      </div>
+      <div class="ui-g-6">
+        <button type="button" pButton (click)="onReject()" label="No" class="ui-button-secondary"></button>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
+<div class="container">
+  <h3 class="text-center text-white pt-5">Reservation</h3>
+  <div class="row justify-content-center">
+    <div class="card">
+      <div class="card-header">Reservation</div>
+      <div class="card-body">
+        <form #reservationForm="ngForm" [class.was-validated]="submitted" (ngSubmit)="showConfirm()">
+          <div class="form-group row">
+            <label for="dateFrom" class="col-md-4 col-form-label text-md-right">Date from</label>
+            <div class="col-md-6">
+              <p-calendar
+                required
+                id="dateFrom"
+                name="dateFrom"
+                [(ngModel)]="reservation.dateFrom"></p-calendar>
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="dateTo" class="col-md-4 col-form-label text-md-right">Date to</label>
+            <div class="col-md-6">
+              <p-calendar
+                required
+                id="dateTo"
+                name="dateTo"
+                [(ngModel)]="reservation.dateTo"></p-calendar>
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="currency" class="col-md-4 col-form-label text-md-right">Currency</label>
+            <div class="col-md-6">
+              <input
+                required
+                type="text"
+                id="currency"
+                class="form-control"
+                name="currency"
+                pattern="^[a-zA-Z]{3}$"
+                [(ngModel)]="reservation.currency">
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="guestsInRoom" class="col-md-4 col-form-label text-md-right">Guests In Room</label>
+            <div class="col-md-6">
+              <input
+                required
+                type="text"
+                id="guestsInRoom"
+                class="form-control"
+                name="guestsInRoom"
+                [(ngModel)]="reservation.guestsInRoom">
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="room" class="col-md-4 col-form-label text-md-right">Room</label>
+            <div class="col-md-6">
+              <p-dropdown
+                required
+                id="room"
+                name="room"
+                [options]="roomsSelect"
+                [style]="{'width': '300px', 'border': '1px solid grey'}"
+                [(ngModel)]="reservation.room"></p-dropdown>
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="customer" class="col-md-4 col-form-label text-md-right">Customer</label>
+            <div class="col-md-6">
+              <p-dropdown
+                class="ui-dropdown-open"
+                required
+                id="customer"
+                name="customer"
+                [options]="customersSelect"
+                [style]="{'width': '300px', 'border': '1px solid grey'}"
+                [(ngModel)]="reservation.customer"></p-dropdown>
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+          <div class="col-md-6 offset-md-4">
+            <button type="submit" class="btn btn-primary ml-4">
+              <span [ngClass]="{'spinner-border': pending, 'spinner-border-sm': pending}"></span>
+              Submit
+            </button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+

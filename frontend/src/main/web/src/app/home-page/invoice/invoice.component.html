@@ -1,0 +1,60 @@
+<p-toast position="center" key="c" (onClose)="onReject()" [modal]="false" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="message">
+    <div style="text-align: center">
+      <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+      <h3>{{message.summary}}</h3>
+      <p>{{message.detail}}</p>
+    </div>
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-6">
+        <button type="button" pButton (click)="onConfirm()" label="Yes" class="ui-button-success"></button>
+      </div>
+      <div class="ui-g-6">
+        <button type="button" pButton (click)="onReject()" label="No" class="ui-button-secondary"></button>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
+<div class="container">
+  <h3 class="text-center text-white pt-5">Invoice</h3>
+  <div class="row justify-content-center">
+    <div class="card">
+      <div class="card-header">Invoice</div>
+      <div class="card-body">
+        <p-table [columns]="cols" [value]="reservations" [scrollable]="true">
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns" style="width:200px">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns">
+                {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-reservation>
+            <tr>
+              <td>{{reservation.customer.firstName}}</td>
+              <td>{{reservation.customer.lastName}}</td>
+              <td>{{reservation.customer.email}}</td>
+              <td>{{reservation.dateFrom | date:'short'}}</td>
+              <td>{{reservation.dateTo | date:'short'}}</td>
+              <td>{{reservation.currency}}</td>
+              <td>{{reservation.price}}</td>
+              <td>{{reservation.room.number}}</td>
+              <td style="text-align: center">
+                <button class="btn btn-primary btn-sm" (click)="showConfirm(reservation)">Generate Invoice</button>
+              </td>
+              <td style="text-align: center">
+                <button class="btn btn-danger btn-sm" (click)="onReservationDelete(reservation.reservationId)">Delete</button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,118 @@
+<div class="container">
+  <h3 class="text-center text-white pt-5">New Customer</h3>
+  <div class="row justify-content-center">
+    <div class="card">
+      <div class="card-header">New Customer</div>
+      <div class="card-body">
+        <form #newCustomerForm="ngForm" [class.was-validated]="submitted" (ngSubmit)="onSubmit()">
+          <div class="form-group row">
+            <label for="firstName" class="col-md-4 col-form-label text-md-right">First Name</label>
+            <div class="col-md-6">
+              <input
+                required
+                type="text"
+                id="firstName"
+                class="form-control"
+                name="firstName"
+                pattern="^[a-zA-Z]*$"
+                [(ngModel)]="customer.firstName">
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="lastName" class="col-md-4 col-form-label text-md-right">Second Name</label>
+            <div class="col-md-6">
+              <input
+                type="text"
+                id="lastName"
+                class="form-control"
+                name="lastName"
+                required
+                pattern="^[a-zA-Z]*$"
+                [(ngModel)]="customer.lastName">
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="emailAdress" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+            <div class="col-md-6">
+              <input required
+                     type="text"
+                     id="emailAdress"
+                     class="form-control"
+                     name="emailAdress"
+                     pattern="^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                     [(ngModel)]="customer.email">
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Make sure you provided valid email address.</div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="pesel" class="col-md-4 col-form-label text-md-right">PESEL</label>
+            <div class="col-md-6">
+              <input
+                required
+                type="text"
+                id="pesel"
+                class="form-control"
+                name="pesel"
+                pattern="^[0-9]{11}$"
+                [(ngModel)]="customer.pesel">
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Provide 11-digit pesel number.</div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="creditCardNumber" class="col-md-4 col-form-label text-md-right">Credit Card Number</label>
+            <div class="col-md-6">
+              <input
+                required
+                type="text"
+                id="creditCardNumber"
+                class="form-control"
+                name="creditCardNumber"
+                pattern="^[0-9]{16}$"
+                [(ngModel)]="customer.creditCardNumber">
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Provid 16-digit credit card number.</div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="phoneNumber" class="col-md-4 col-form-label text-md-right">Phone Number</label>
+            <div class="col-md-6">
+              <input
+                required
+                type="text"
+                id="phoneNumber"
+                class="form-control"
+                name="phoneNumber"
+                pattern="^[0-9]{9}$"
+                [(ngModel)]="customer.phoneNumber">
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Provide 9-digit phone number.</div>
+            </div>
+          </div>
+
+          <div class="col-md-6 offset-md-4">
+            <button type="submit" class="btn btn-primary" routerLink="../">
+              <span [ngClass]="{'spinner-border': pending, 'spinner-border-sm': pending}"></span>
+              Back
+            </button>
+            <button type="submit" class="btn btn-primary ml-4">
+              <span [ngClass]="{'spinner-border': pending, 'spinner-border-sm': pending}"></span>
+              Add
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

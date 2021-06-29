@@ -9,6 +9,7 @@ bin/
 node_modules/
 node/
 target/
+backend/src/main/webapp/
 
 # IDEs and editors
 /.idea

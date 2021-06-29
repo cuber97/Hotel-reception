@@ -1,0 +1,13 @@
+<nav class="navbar navbar-expand-sm bg-light sticky-top justify-content-center">
+  <div class="container" [ngStyle]="{'margin-left': logged ? 0 : ''}">
+    <i *ngIf="logged" class="pi pi-list" (click)="toggleMenu()"></i>
+    <a routerLink="/" class="navbar-brand">
+      <!-- Logo Image -->
+      <img src="assets/images/hotel-logo.png" width="45" alt="" class="d-inline-block align-middle mr-3">
+      <!-- Logo Text -->
+      <span class="text-uppercase font-weight-bold font-italic logo-text">Hotel</span>
+    </a>
+    <i *ngIf="logged" class="pi pi-sign-out mr-0" (click)="logOut()"></i>
+  </div>
+
+</nav>

@@ -1,0 +1,133 @@
+<app-header></app-header>
+
+<div class="container">
+  <h3 class="text-center text-white pt-5">Register</h3>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">Register</div>
+        <div class="card-body">
+          <form #registrationForm="ngForm" [class.was-validated]="submitted" (ngSubmit)="onSubmit()">
+            <div class="form-group row">
+              <label for="firstName" class="col-md-4 col-form-label text-md-right">First Name</label>
+              <div class="col-md-6">
+                <input
+                  required
+                  type="text"
+                  id="firstName"
+                  class="form-control"
+                  name="firstName"
+                  pattern="^[a-zA-Z]*$"
+                  [(ngModel)]="account.firstName">
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="lastName" class="col-md-4 col-form-label text-md-right">Second Name</label>
+              <div class="col-md-6">
+                <input
+                  type="text"
+                  id="lastName"
+                  class="form-control"
+                  name="lastName"
+                  required
+                  pattern="^[a-zA-Z]*$"
+                  [(ngModel)]="account.lastName">
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="emailAdress" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+              <div class="col-md-6">
+                <input required
+                       type="text"
+                       id="emailAdress"
+                       class="form-control"
+                       name="emailAdress"
+                       pattern="^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                       [(ngModel)]="account.email">
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Niepoprawna forma adresu email.</div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="password" class="col-md-4 col-form-label text-md-right">Pasword</label>
+              <div class="col-md-6">
+                <input required type="password"
+                       id="password"
+                       class="form-control"
+                       name="password"
+                       [(ngModel)]="account.password"
+                       pattern="^[a-zA-z0-9!]{6,30}$"
+                       maxlength="30">
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">
+                  Hasło musi zawierać od 8 and 30 znaków, będących małymi i dużymi literami, cyframi oraz znakiem wykrzyknika (!).
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="phoneNumber" class="col-md-4 col-form-label text-md-right">Phone Number</label>
+              <div class="col-md-6">
+                <input
+                  required
+                  type="text"
+                  id="phoneNumber"
+                  class="form-control"
+                  name="phoneNumber"
+                  pattern="^[0-9]{9}$"
+                  [(ngModel)]="account.phoneNumber">
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Provide 9-digit phone number.</div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="role" class="col-md-4 col-form-label text-md-right">Role</label>
+              <div class="col-md-6">
+                <select
+                  required
+                  type="text"
+                  id="role"
+                  class="form-control"
+                  name="role"
+                  [(ngModel)]="account.role">
+                  <option value="CUSTOMER">CUSTOMER</option>
+                  <option value="WORKER">WORKER</option>
+                </select>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Choose Role.</div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="captcha" class="col-md-4 col-form-label text-md-right">ReCaptcha</label>
+              <div class="col-md-6" style="transform:scale(0.8);transform-origin:0 0">
+                <p-captcha language="en" id="captcha" siteKey="6Lfox8cUAAAAACKYd7TNOazAyfSnUgKfqHjx_KTc"
+                           (onResponse)="recaptchaVerified = true;" (onExpire)="recaptchaVerified = false;"
+                           #recaptcha></p-captcha>
+                <div class="text-danger" *ngIf="submitted && !recaptchaVerified">Recaptcha has not been verified.</div>
+              </div>
+            </div>
+
+            <div class="col-md-6 offset-md-4">
+              <button type="submit" class="btn btn-primary" routerLink="../">
+                Back
+              </button>
+              <button type="submit" class="btn btn-primary ml-4">
+                <span [ngClass]="{'spinner-border': pending, 'spinner-border-sm': pending}"></span>
+                Register
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
