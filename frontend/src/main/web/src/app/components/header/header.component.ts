@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SidenavService} from '../sidenav.service';
+import {SidenavService} from '../../core/sidenav.service';
 import {Router} from '@angular/router';
 
 @Component({

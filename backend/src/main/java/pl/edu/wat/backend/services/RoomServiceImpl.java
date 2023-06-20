@@ -1,9 +1,9 @@
 package pl.edu.wat.backend.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.backend.dtos.RoomDto;
-import pl.edu.wat.backend.entities.CustomerEntity;
 import pl.edu.wat.backend.entities.RoomEntity;
 import pl.edu.wat.backend.repositories.RoomRepository;
 
@@ -15,10 +15,12 @@ import java.util.Optional;
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    private RoomServiceImpl(RoomRepository roomRepository) {
+    private RoomServiceImpl(RoomRepository roomRepository, ModelMapper modelMapper) {
         this.roomRepository = roomRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -27,14 +29,7 @@ public class RoomServiceImpl implements RoomService {
 
         roomRepository.findAll()
                 .forEach(room -> roomDtos.add(
-                        new RoomDto(
-                                room.getRoomId(),
-                                room.getNumber(),
-                                room.getFloor(),
-                                room.getMaxPeopleCapacity(),
-                                room.getDailyRateForPerson(),
-                                room.getPhotoFileName()
-                        )
+                        this.modelMapper.map(room, RoomDto.class)
                 ));
 
         return roomDtos;
@@ -46,12 +41,7 @@ public class RoomServiceImpl implements RoomService {
             return false;
         }
 
-        RoomEntity roomEntity = new RoomEntity();
-        roomEntity.setNumber(room.getNumber());
-        roomEntity.setFloor(room.getFloor());
-        roomEntity.setMaxPeopleCapacity(room.getMaxPeopleCapacity());
-        roomEntity.setDailyRateForPerson(room.getDailyRateForPerson());
-        roomEntity.setPhotoFileName(room.getPhotoFileName());
+        RoomEntity roomEntity = this.modelMapper.map(room, RoomEntity.class);
 
         roomRepository.save(roomEntity);
 
@@ -67,14 +57,7 @@ public class RoomServiceImpl implements RoomService {
 
         RoomEntity room = roomEntity.get();
 
-        return new RoomDto(
-                room.getRoomId(),
-                room.getNumber(),
-                room.getFloor(),
-                room.getMaxPeopleCapacity(),
-                room.getDailyRateForPerson(),
-                room.getPhotoFileName()
-        );
+        return this.modelMapper.map(room, RoomDto.class);
     }
 
     @Override
@@ -84,26 +67,15 @@ public class RoomServiceImpl implements RoomService {
             return null;
         }
 
-        return new RoomDto(
-                roomEntity.getRoomId(),
-                roomEntity.getNumber(),
-                roomEntity.getFloor(),
-                roomEntity.getMaxPeopleCapacity(),
-                roomEntity.getDailyRateForPerson(),
-                roomEntity.getPhotoFileName()
-        );
+        return this.modelMapper.map(roomEntity, RoomDto.class);
     }
 
     @Override
     public void updateRoom(RoomDto roomDto) {
         Optional<RoomEntity> optionalCustomerEntity = roomRepository.findById(roomDto.getRoomId());
         if (optionalCustomerEntity.isPresent()) {
-            RoomEntity roomEntity = optionalCustomerEntity.get();
-            roomEntity.setNumber(roomDto.getNumber());
-            roomEntity.setFloor(roomDto.getFloor());
-            roomEntity.setMaxPeopleCapacity(roomDto.getMaxPeopleCapacity());
-            roomEntity.setDailyRateForPerson(roomDto.getDailyRateForPerson());
-            roomEntity.setPhotoFileName(roomDto.getPhotoFileName());
+            RoomEntity roomEntity = this.modelMapper.map(roomDto, RoomEntity.class);
+            roomEntity.setRoomId(optionalCustomerEntity.get().getRoomId());
             roomRepository.save(roomEntity);
         }
     }

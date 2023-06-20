@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import {Reservation} from '../../models/reservation';
-import {HttpService} from '../../http.service';
+import {HttpService} from '../../core/http.service';
 import {DatePipe} from '@angular/common';
 import {NgForm} from '@angular/forms';
 import {MessageService} from 'primeng/api';
@@ -34,14 +34,14 @@ export class TimetableComponent implements OnInit {
     reservations.forEach(reservation => {
       console.log(reservation);
       this.calendarEventsTmp.push({
-        title: 'Pokój ' + reservation.room.number + ' zostaje zajęty',
+        title: 'Room ' + reservation.room.number + ' occupied',
         date: this.datePipe.transform(reservation.dateFrom.toString(), 'yyyy-MM-dd'),
         extraParams: reservation
       });
       console.log(this.datePipe.transform(reservation.dateFrom.toString(), 'yyyy-MM-dd'));
       this.calendarEvents = this.calendarEventsTmp;
       this.calendarEventsTmp.push({
-        title: 'Pokój ' + reservation.room.number + ' zwalnia się',
+        title: 'Room ' + reservation.room.number + ' free',
         date: this.datePipe.transform(reservation.dateTo.toString(), 'yyyy-MM-dd'),
         extraParams: reservation
       });

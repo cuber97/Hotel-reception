@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.wat.backend.dtos.AccountDto;
 import pl.edu.wat.backend.services.AccountService;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -29,7 +28,7 @@ public class AccountController {
 
     @GetMapping("/users/{accountId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity getAccount(@PathVariable("accountId") Integer accountId) {
+    public ResponseEntity<AccountDto> getAccount(@PathVariable("accountId") Integer accountId) {
         AccountDto accountDto = accountService.getAccount(accountId);
         if (accountDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -40,15 +39,15 @@ public class AccountController {
 
     @PutMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity updateAccount(@RequestBody AccountDto accountDto) {
+    public ResponseEntity<Void> updateAccount(@RequestBody AccountDto accountDto) {
         accountService.updateAccount(accountDto);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/users/{accountId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity deleteAccount(@PathVariable("accountId") Integer accountId) {
+    public ResponseEntity<Void> deleteAccount(@PathVariable("accountId") Integer accountId) {
         accountService.deleteAccount(accountId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -37,17 +37,17 @@ public class RoomController {
     }
 
     @GetMapping("/rooms/{id}")
-    public ResponseEntity getRoomById(@PathVariable("id") Integer id) {
+    public ResponseEntity<RoomDto> getRoomById(@PathVariable("id") Integer id) {
         RoomDto roomDto = roomService.getRoomById(id);
         if (roomDto == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(roomDto, HttpStatus.OK);
     }
 
     @PostMapping("/rooms")
-    public ResponseEntity addRoom(@RequestParam("photo") MultipartFile file, @RequestParam("room") String room) throws IOException {
+    public ResponseEntity<Void> addRoom(@RequestParam("photo") MultipartFile file, @RequestParam("room") String room) throws IOException {
         RoomDto roomDto = new ObjectMapper().readValue(room, RoomDto.class);
 
         boolean exist = new File(servletContext.getRealPath("/room-photos")).exists();
@@ -65,14 +65,14 @@ public class RoomController {
         }
         roomDto.setPhotoFileName(modifiedFileName);
         if (roomService.addRoom(roomDto)) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/rooms/{roomId}")
-    public ResponseEntity updateRoom(@PathVariable("roomId") Integer roomId,@RequestParam("photo") MultipartFile file, @RequestParam("room") String room) throws IOException {
+    public ResponseEntity<Void> updateRoom(@PathVariable("roomId") Integer roomId,@RequestParam("photo") MultipartFile file, @RequestParam("room") String room) throws IOException {
         RoomDto roomDto = new ObjectMapper().readValue(room, RoomDto.class);
 
         boolean exist = new File(servletContext.getRealPath("/room-photos")).exists();
@@ -92,14 +92,14 @@ public class RoomController {
         roomDto.setPhotoFileName(modifiedFileName);
         roomService.updateRoom(roomDto);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/rooms/{id}")
-    public ResponseEntity deleteRoom(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteRoom(@PathVariable("id") Integer id) {
         roomService.deleteRoomById(id);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("rooms/photos")
@@ -107,10 +107,11 @@ public class RoomController {
         List<RoomPhotoDto> roomPhotoDtos = new ArrayList<>();
         String path = servletContext.getRealPath("/room-photos");
         File fileFolder = new File(path);
-        if (fileFolder != null) {
+        System.out.println(fileFolder);
+        if (fileFolder.listFiles() != null) {
             for (File file : fileFolder.listFiles()) {
                 if (!file.isDirectory()) {
-                    String encodeBase64 = null;
+                    String encodeBase64;
                     try {
                         String extension = FilenameUtils.getExtension(file.getName());
                         FileInputStream fileInputStream = new FileInputStream(file);

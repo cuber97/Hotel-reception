@@ -11,14 +11,13 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Service
 public class InvoiceFileServiceImpl implements InvoiceFileService{
-    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+    private final static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
             Font.NORMAL);
-    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+    private final static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
             Font.BOLD);
 
     public void generateDocument(OutputStream outputStream, ReservationDto reservationDto) {

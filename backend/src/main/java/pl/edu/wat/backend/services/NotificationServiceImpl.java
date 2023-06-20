@@ -1,5 +1,6 @@
 package pl.edu.wat.backend.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -9,7 +10,6 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.backend.dtos.AccountDto;
 import pl.edu.wat.backend.dtos.ReservationDto;
-import pl.edu.wat.backend.entities.AccountEntity;
 
 import javax.activation.DataSource;
 import javax.mail.Message;
@@ -19,12 +19,13 @@ import java.io.ByteArrayOutputStream;
 
 @Service
 public class NotificationServiceImpl implements NotificationService{
-    private JavaMailSender javaMailSender;
-    private InvoiceFileService invoiceFileService;
+    private final JavaMailSender javaMailSender;
+    private final InvoiceFileService invoiceFileService;
 
     @Value("${spring.mail.username}")
     String fromMail;
 
+    @Autowired
     public NotificationServiceImpl(JavaMailSender javaMailSender, InvoiceFileService invoiceFileService) {
         this.javaMailSender = javaMailSender;
         this.invoiceFileService = invoiceFileService;

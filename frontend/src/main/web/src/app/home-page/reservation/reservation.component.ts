@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Reservation} from '../../models/reservation';
-import {HttpService} from '../../http.service';
+import {HttpService} from '../../core/http.service';
 import {Customer} from '../../models/customer';
 import {Room} from '../../models/room';
 import {MessageService, SelectItem} from 'primeng/api';
@@ -15,12 +15,16 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class ReservationComponent implements OnInit {
   submitted = false;
   pending = false;
-  reservation: Reservation = {dateFrom: new Date()};
+  reservation: Reservation = {dateFrom: new Date(), dateTo: new Date(new Date().getTime() + (24 * 60 * 60 * 1000)), currency: 'PLN', guestsInRoom: 1};
   customers: Customer[];
   customersSelect: SelectItem[];
   rooms: Room[];
   roomsSelect: SelectItem[];
+  currencies = [{label: 'PLN', value: 'PLN'}, {label: 'EUR', value: 'EUR'}];
   token: string;
+
+  public readonly Math = Math;
+
   @ViewChild('reservationForm', {static: true}) reservationForm: NgForm;
   constructor(private http: HttpService,
               private messageService: MessageService,
@@ -49,6 +53,7 @@ export class ReservationComponent implements OnInit {
     this.http.getAllRooms(this.token).subscribe(rooms => {
       this.rooms = rooms;
       console.log(rooms);
+      this.reservation.room = this.rooms[0];
       this.roomsSelect = this.rooms.map(room => ({
         label: room.number.toString(),
         value: room
@@ -71,11 +76,13 @@ export class ReservationComponent implements OnInit {
   onConfirm() {
     this.messageService.clear('c');
     this.submitted = true;
+    console.log(this.reservationForm);
     if (this.reservationForm.invalid) {
       this.messageService.add({severity: 'error', summary: 'Error Message', detail: 'Provide valid data'});
       return;
     }
     this.pending = true;
+    this.reservation.price = this.reservation.room.dailyRateForPerson * Math.ceil(((this.reservation.dateTo.getTime() - this.reservation.dateFrom.getTime()) / (1000 * 3600 * 24)));
     console.log(this.reservation);
     this.http.addReservation(this.reservation, this.token).subscribe(() => {
         this.messageService.add({severity: 'success', summary: 'Success Message', detail: 'Reservation created successfully.'});

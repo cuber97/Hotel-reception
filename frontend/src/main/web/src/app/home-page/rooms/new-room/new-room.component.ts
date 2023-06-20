@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MessageService} from 'primeng/api';
 import {Room} from '../../../models/room';
 import {NgForm} from '@angular/forms';
-import {HttpService} from '../../../http.service';
+import {HttpService} from '../../../core/http.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FileUpload} from 'primeng/fileupload';
 

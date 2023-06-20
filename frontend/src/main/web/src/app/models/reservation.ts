@@ -3,7 +3,6 @@ import {Room} from './room';
 
 export class Reservation {
   constructor(
-    public reservationId?: number,
     public dateFrom?: Date,
     public dateTo?: Date,
     public currency?: string,

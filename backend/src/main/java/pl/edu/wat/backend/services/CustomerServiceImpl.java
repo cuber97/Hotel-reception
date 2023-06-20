@@ -1,13 +1,11 @@
 package pl.edu.wat.backend.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.backend.dtos.CustomerDto;
 import pl.edu.wat.backend.entities.CustomerEntity;
 import pl.edu.wat.backend.repositories.CustomerRepository;
-import pl.edu.wat.backend.repositories.ReservationRepository;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +14,12 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, ModelMapper modelMapper) {
         this.customerRepository = customerRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -40,13 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
             return false;
         }
 
-        CustomerEntity customerEntity = new CustomerEntity();
-        customerEntity.setFirstName(customerDto.getFirstName());
-        customerEntity.setLastName(customerDto.getLastName());
-        customerEntity.setEmail(customerDto.getEmail());
-        customerEntity.setPesel(customerDto.getPesel());
-        customerEntity.setCreditCardNumber(customerDto.getCreditCardNumber());
-        customerEntity.setPhoneNumber(customerDto.getPhoneNumber());
+        CustomerEntity customerEntity = this.modelMapper.map(customerDto, CustomerEntity.class);
 
         customerRepository.save(customerEntity);
 
@@ -60,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
             return null;
         }
         CustomerEntity customerEntity = optionalCustomerEntity.get();
-        return new CustomerDto(customerEntity.getCustomerId(), customerEntity.getFirstName(), customerEntity.getLastName(), customerEntity.getEmail(), customerEntity.getPesel(), customerEntity.getCreditCardNumber(), customerEntity.getPhoneNumber());
+        return this.modelMapper.map(customerEntity, CustomerDto.class);
     }
 
     @Override
@@ -72,13 +66,8 @@ public class CustomerServiceImpl implements CustomerService {
     public void updateCustomer(CustomerDto customerDto) {
         Optional<CustomerEntity> optionalCustomerEntity = customerRepository.findById(customerDto.getCustomerId());
         if (optionalCustomerEntity.isPresent()) {
-            CustomerEntity customerEntity = optionalCustomerEntity.get();
-            customerEntity.setFirstName(customerDto.getFirstName());
-            customerEntity.setLastName(customerDto.getLastName());
-            customerEntity.setEmail(customerDto.getEmail());
-            customerEntity.setCreditCardNumber(customerDto.getCreditCardNumber());
-            customerEntity.setPesel(customerDto.getPesel());
-            customerEntity.setPhoneNumber(customerDto.getPhoneNumber());
+            CustomerEntity customerEntity = this.modelMapper.map(customerDto, CustomerEntity.class);
+            customerEntity.setCustomerId(optionalCustomerEntity.get().getCustomerId());
             customerRepository.save(customerEntity);
         }
     }

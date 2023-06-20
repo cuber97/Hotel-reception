@@ -1,17 +1,17 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
-import {LoginComponent} from './login/login.component';
-import {RegisterComponent} from './register/register.component';
+import {LoginComponent} from './components/login/login.component';
+import {RegisterComponent} from './components/register/register.component';
 import {HomePageComponent} from './home-page/home-page.component';
-import {AdminDashboardComponent} from './admin-dashboard/admin-dashboard.component';
+import {AdminDashboardComponent} from './components/admin-dashboard/admin-dashboard.component';
 import {TimetableComponent} from './home-page/timetable/timetable.component';
 import {CustomersComponent} from './home-page/customers/customers.component';
 import {InvoiceComponent} from './home-page/invoice/invoice.component';
-import {AdminEditDashboardComponent} from './admin-dashboard/admin-edit-dashboard/admin-edit-dashboard.component';
+import {AdminEditDashboardComponent} from './components/admin-dashboard/admin-edit-dashboard/admin-edit-dashboard.component';
 import {NewCustomerComponent} from './home-page/customers/new-customer/new-customer.component';
 import {EditCustomerComponent} from './home-page/customers/edit-customer/edit-customer.component';
 import {ReservationComponent} from './home-page/reservation/reservation.component';
-import {AuthGuard} from './auth.guard';
+import {AuthGuardService} from './core/auth.guard.service';
 import {NewRoomComponent} from './home-page/rooms/new-room/new-room.component';
 import {RoomComponent} from './home-page/rooms/room.component';
 import {UpdateRoomComponent} from './home-page/rooms/update-room/update-room.component';
@@ -32,7 +32,7 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomePageComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuardService],
     data: {roles: ['WORKER', 'CUSTOMER']},
     children: [
       {
@@ -107,7 +107,7 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    // canActivate: [AuthGuard],
+    // canActivate: [AuthGuardService],
     data: {roles: ['ADMIN']},
     children: [
       {

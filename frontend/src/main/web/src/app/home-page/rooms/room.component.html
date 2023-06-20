@@ -42,18 +42,18 @@
               <td>{{room.dailyRateForPerson}}</td>
               <td style="text-align: center;">
                 <img *ngIf="roomPhotosMap.get(room.roomId)" [src]="roomPhotosMap.get(room.roomId).photo" height="100" width="100" alt="" style="object-fit: contain">
-                <span *ngIf="!roomPhotosMap.get(room.roomId)">Brak zdjęcia</span>
+                <span *ngIf="!roomPhotosMap.get(room.roomId)">No photo available</span>
               </td>
               <td style="text-align: center">
-                <span><button class="btn btn-primary btn-sm" [routerLink]="room.roomId">Modyfikuj</button></span>
+                <span><button class="btn btn-primary btn-sm" [routerLink]="room.roomId">Modify</button></span>
               </td>
               <td style="text-align: center">
-                <button class="btn btn-danger btn-sm" (click)="onRoomDelete(room.roomId)">Usuń</button>
+                <button class="btn btn-danger btn-sm" (click)="onRoomDelete(room.roomId)">Delete</button>
               </td>
             </tr>
           </ng-template>
         </p-table>
-        <button class="mt-3 btn btn-success btn-sm" (click)="onRoomAdd()">Dodaj</button>
+        <button class="mt-3 btn btn-success btn-sm" (click)="onRoomAdd()">Add</button>
       </div>
     </div>
   </div>

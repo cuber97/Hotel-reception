@@ -1,5 +1,6 @@
 package pl.edu.wat.backend.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.backend.dtos.AccountDto;
@@ -15,31 +16,23 @@ import java.util.Optional;
 @Service
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
-    private final PasswordEncodeService passwordEncodeService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository, PasswordEncodeService passwordEncodeService) {
+    public AccountServiceImpl(AccountRepository accountRepository, ModelMapper modelMapper) {
         this.accountRepository = accountRepository;
-        this.passwordEncodeService = passwordEncodeService;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public boolean saveAccount(AccountDto account) {
-        String password = passwordEncodeService.getPasswordHash(account.getPassword());
         List<AccountDto> accounts = findAll();
         accounts.forEach(foundAccount -> {
             if (account.getEmail().equals(foundAccount.getEmail())) {
                 throw new AccountConflictException();
             }
         });
-        AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setEmail(account.getEmail());
-        accountEntity.setEnabled(account.isEnabled());
-        accountEntity.setRole(account.getRole());
-        accountEntity.setPassword(password);
-        accountEntity.setFirstName(account.getFirstName());
-        accountEntity.setLastName(account.getLastName());
-        accountEntity.setPhoneNumber(account.getPhoneNumber());
+        AccountEntity accountEntity = this.modelMapper.map(account, AccountEntity.class);
         accountEntity.setCreatedDate(new Date());
 
         accountRepository.save(accountEntity);
@@ -50,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountDto> findAll() {
         List<AccountDto> accountDtos = new ArrayList<>();
         accountRepository.findAll()
-                .forEach(account -> accountDtos.add(new AccountDto(account.getAccountId(), account.getFirstName(), account.getLastName(), account.getEmail(), account.getPassword(), account.isEnabled(), account.getRole(), account.getPhoneNumber(), account.getCreatedDate())));
+                .forEach(account -> accountDtos.add(this.modelMapper.map(account, AccountDto.class)));
         return accountDtos;
     }
 
@@ -61,7 +54,7 @@ public class AccountServiceImpl implements AccountService {
             return null;
         }
         AccountEntity accountEntity = optionalAccountEntity.get();
-        return new AccountDto(accountEntity.getAccountId(), accountEntity.getFirstName(), accountEntity.getLastName(), accountEntity.getEmail(), accountEntity.getPassword(), accountEntity.isEnabled(), accountEntity.getRole(), accountEntity.getPhoneNumber(), accountEntity.getCreatedDate());
+        return this.modelMapper.map(accountEntity, AccountDto.class);
     }
 
     @Override
@@ -73,12 +66,8 @@ public class AccountServiceImpl implements AccountService {
     public void updateAccount(AccountDto accountDto) {
         Optional<AccountEntity> optionalAccountEntity = accountRepository.findById(accountDto.getAccountId());
         if (optionalAccountEntity.isPresent()) {
-            AccountEntity accountEntity = optionalAccountEntity.get();
-            accountEntity.setEnabled(accountDto.isEnabled());
-            accountEntity.setRole(accountDto.getRole());
-            accountEntity.setFirstName(accountDto.getFirstName());
-            accountEntity.setLastName(accountDto.getLastName());
-            accountEntity.setPhoneNumber(accountDto.getPhoneNumber());
+            AccountEntity accountEntity = this.modelMapper.map(accountDto, AccountEntity.class);
+            accountEntity.setAccountId(optionalAccountEntity.get().getAccountId());
             accountRepository.save(accountEntity);
         }
     }

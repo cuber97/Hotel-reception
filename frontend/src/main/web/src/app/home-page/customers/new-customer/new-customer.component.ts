@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Customer} from '../../../models/customer';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpService} from '../../../http.service';
+import {HttpService} from '../../../core/http.service';
 @Component({
   selector: 'app-new-customer',
   templateUrl: './new-customer.component.html',

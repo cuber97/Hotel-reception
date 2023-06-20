@@ -1,26 +1,20 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {Account} from './models/account';
+import {Account} from '../models/account';
 import {catchError} from 'rxjs/operators';
-import {Customer} from './models/customer';
-import {Reservation} from './models/reservation';
-import {Complaint} from './models/complaints';
+import {Customer} from '../models/customer';
+import {Reservation} from '../models/reservation';
+import {Complaint} from '../models/complaints';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
-  basicUrl = 'http://localhost:8080';
-  // httpOptions = {
-  //   headers: new HttpHeaders({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
-  // };
+  basicUrl = environment.baseApiUrl;
 
   constructor(private http: HttpClient) {
-  }
-
-  getSampleData(): Observable<any> {
-    return this.http.get('resource');
   }
 
   addAccount(account: Account): Observable<Account> {

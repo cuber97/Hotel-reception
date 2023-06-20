@@ -1,7 +1,6 @@
 package pl.edu.wat.backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,9 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class AuthenticationController {
-    @Value("${jwt.header}")
-    private String tokenHeader;
-
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -34,7 +30,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login (@RequestBody AccountEntity accountEntity, HttpServletResponse response) {
+    public ResponseEntity<Object> login (@RequestBody AccountEntity accountEntity, HttpServletResponse response) {
         try {
             Authentication authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(accountEntity.getEmail(), accountEntity.getPassword()));

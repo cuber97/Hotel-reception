@@ -9,21 +9,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.wat.backend.domain.Response;
 import pl.edu.wat.backend.dtos.AccountDto;
-import pl.edu.wat.backend.dtos.ReservationDto;
 import pl.edu.wat.backend.exceptions.AccountConflictException;
 import pl.edu.wat.backend.services.AccountService;
-import pl.edu.wat.backend.services.NotificationService;
-import pl.edu.wat.backend.services.NotificationServiceImpl;
 
 @RestController
 public class RegistrationController {
-    private AccountService accountService;
-    private NotificationService notificationService;
+    private final AccountService accountService;
 
     @Autowired
-    public RegistrationController(AccountService accountService, NotificationServiceImpl notificationServiceImpl) {
+    public RegistrationController(AccountService accountService) {
         this.accountService = accountService;
-        this.notificationService = notificationServiceImpl;
     }
 
     @PostMapping("/registration")
@@ -38,7 +33,7 @@ public class RegistrationController {
             catch (MailException e) {
                 return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.OK);
             }
-            return new ResponseEntity<Response>(new Response("User is saved successfully"), HttpStatus.OK);
+            return new ResponseEntity<>(new Response("User is saved successfully"), HttpStatus.OK);
         }
         return null;
     }

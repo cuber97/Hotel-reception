@@ -2,8 +2,6 @@ package pl.edu.wat.backend.services;
 
 import org.springframework.stereotype.Service;
 import pl.edu.wat.backend.dtos.ComplaintDto;
-import pl.edu.wat.backend.dtos.CustomerDto;
-import pl.edu.wat.backend.dtos.RoomDto;
 
 import java.util.List;
 

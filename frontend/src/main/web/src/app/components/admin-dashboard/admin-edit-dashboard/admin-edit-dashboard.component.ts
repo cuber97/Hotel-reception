@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpService} from '../../http.service';
-import {Account} from '../../models/account';
+import {HttpService} from '../../../core/http.service';
+import {Account} from '../../../models/account';
 import {MessageService} from 'primeng/api';
 import {NgForm} from '@angular/forms';
 

@@ -25,7 +25,7 @@ public class ReservationController {
     }
 
     @GetMapping("/reservation/{reservationId}")
-    public ResponseEntity getReservation(@PathVariable("reservationId") Integer reservationId) {
+    public ResponseEntity<ReservationDto> getReservation(@PathVariable("reservationId") Integer reservationId) {
         ReservationDto reservationDto = reservationService.getReservation(reservationId);
         if (reservationDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -35,23 +35,23 @@ public class ReservationController {
     }
 
     @PostMapping("/reservations")
-    public ResponseEntity addReservation(@RequestBody ReservationDto reservationDto) {
+    public ResponseEntity<Void> addReservation(@RequestBody ReservationDto reservationDto) {
         if (reservationService.addReservation(reservationDto)) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/reservation")
-    public ResponseEntity updateAccount(@RequestBody ReservationDto reservationDto) {
+    public ResponseEntity<Void> updateAccount(@RequestBody ReservationDto reservationDto) {
         reservationService.updateReservation(reservationDto);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/reservation/{reservationId}")
-    public ResponseEntity deleteReservation(@PathVariable("reservationId") Integer reservationId) {
+    public ResponseEntity<Void> deleteReservation(@PathVariable("reservationId") Integer reservationId) {
         reservationService.deleteReservation(reservationId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

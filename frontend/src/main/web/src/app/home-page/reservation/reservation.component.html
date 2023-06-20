@@ -50,33 +50,18 @@
           <div class="form-group row">
             <label for="currency" class="col-md-4 col-form-label text-md-right">Currency</label>
             <div class="col-md-6">
-              <input
+              <p-dropdown
                 required
-                type="text"
                 id="currency"
-                class="form-control"
                 name="currency"
-                pattern="^[a-zA-Z]{3}$"
-                [(ngModel)]="reservation.currency">
+                [options]="currencies"
+                [style]="{'width': '300px', 'border': '1px solid grey'}"
+                [(ngModel)]="reservation.currency"></p-dropdown>
               <div class="valid-feedback">Valid.</div>
               <div class="invalid-feedback">Please fill out this field.</div>
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="guestsInRoom" class="col-md-4 col-form-label text-md-right">Guests In Room</label>
-            <div class="col-md-6">
-              <input
-                required
-                type="text"
-                id="guestsInRoom"
-                class="form-control"
-                name="guestsInRoom"
-                [(ngModel)]="reservation.guestsInRoom">
-              <div class="valid-feedback">Valid.</div>
-              <div class="invalid-feedback">Please fill out this field.</div>
-            </div>
-          </div>
           <div class="form-group row">
             <label for="room" class="col-md-4 col-form-label text-md-right">Room</label>
             <div class="col-md-6">
@@ -87,6 +72,37 @@
                 [options]="roomsSelect"
                 [style]="{'width': '300px', 'border': '1px solid grey'}"
                 [(ngModel)]="reservation.room"></p-dropdown>
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="customer" class="col-md-4 col-form-label text-md-right">Daily rate for person</label>
+            <div class="col-md-6" style="padding-top: 7px; padding-bottom: 7px">
+              {{ reservation.room.dailyRateForPerson  }}
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="customer" class="col-md-4 col-form-label text-md-right">Room capacity</label>
+            <div class="col-md-6" style="padding-top: 7px; padding-bottom: 7px">
+              {{ reservation.room.maxPeopleCapacity  }}
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="guestsInRoom" class="col-md-4 col-form-label text-md-right">Guests In Room</label>
+            <div class="col-md-6">
+              <input
+                required
+                type="number"
+                id="guestsInRoom"
+                class="form-control"
+                name="guestsInRoom"
+                [min]="1"
+                [max]="reservation.room?.maxPeopleCapacity || 3"
+                [(ngModel)]="reservation.guestsInRoom">
               <div class="valid-feedback">Valid.</div>
               <div class="invalid-feedback">Please fill out this field.</div>
             </div>
@@ -106,6 +122,14 @@
               <div class="invalid-feedback">Please fill out this field.</div>
             </div>
           </div>
+
+          <div class="form-group row">
+            <label for="customer" class="col-md-4 col-form-label text-md-right">Price</label>
+            <div class="col-md-6" style="padding-top: 7px; padding-bottom: 7px">
+              {{ reservation.room.dailyRateForPerson * Math.ceil(((reservation.dateTo.getTime() - reservation.dateFrom.getTime()) / (1000 * 3600 * 24))) }}
+            </div>
+          </div>
+
           <div class="col-md-6 offset-md-4">
             <button type="submit" class="btn btn-primary ml-4">
               <span [ngClass]="{'spinner-border': pending, 'spinner-border-sm': pending}"></span>

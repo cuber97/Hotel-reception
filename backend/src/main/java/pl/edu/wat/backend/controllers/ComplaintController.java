@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.wat.backend.dtos.ComplaintDto;
-import pl.edu.wat.backend.dtos.CustomerDto;
 import pl.edu.wat.backend.services.ComplaintService;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class ComplaintController {
     }
 
     @GetMapping("/complaints/{complaintId}")
-    public ResponseEntity getComplaint(@PathVariable("complaintId") Integer complaintId) {
+    public ResponseEntity<ComplaintDto> getComplaint(@PathVariable("complaintId") Integer complaintId) {
         ComplaintDto complaintDto = complaintService.getComplaintById(complaintId);
         if (complaintDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -42,23 +41,23 @@ public class ComplaintController {
     }
 
     @PostMapping("/complaints")
-    public ResponseEntity addComplaint(@RequestBody ComplaintDto complaintDto) {
+    public ResponseEntity<Void> addComplaint(@RequestBody ComplaintDto complaintDto) {
         if (complaintService.addComplaint(complaintDto)) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/complaints")
-    public ResponseEntity updateComplaint(@RequestBody ComplaintDto complaintDto) {
+    public ResponseEntity<Void> updateComplaint(@RequestBody ComplaintDto complaintDto) {
         complaintService.updateComplaint(complaintDto);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/complaints/{complaintId}")
-    public ResponseEntity deleteComplaint(@PathVariable("complaintId") Integer complaintId) {
+    public ResponseEntity<Void> deleteComplaint(@PathVariable("complaintId") Integer complaintId) {
         complaintService.deleteComplaintById(complaintId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

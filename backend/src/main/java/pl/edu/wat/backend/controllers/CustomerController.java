@@ -34,24 +34,24 @@ public class CustomerController {
     }
 
     @PostMapping("/customers")
-    public ResponseEntity addCustomer(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<Void> addCustomer(@RequestBody CustomerDto customerDto) {
         if (customerService.addCustomer(customerDto)) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/customers/{customerIdn}")
-    public ResponseEntity deleteCustomer(@PathVariable("customerIdn") Integer customerIdn) {
+    public ResponseEntity<Void> deleteCustomer(@PathVariable("customerIdn") Integer customerIdn) {
         customerService.deleteCustomer(customerIdn);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/customers")
-    public ResponseEntity updateCustomer(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<Void> updateCustomer(@RequestBody CustomerDto customerDto) {
         customerService.updateCustomer(customerDto);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

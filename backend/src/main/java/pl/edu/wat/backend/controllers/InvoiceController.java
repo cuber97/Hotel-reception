@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.wat.backend.domain.Response;
 import pl.edu.wat.backend.dtos.ReservationDto;
-import pl.edu.wat.backend.services.AccountService;
 import pl.edu.wat.backend.services.NotificationService;
 import pl.edu.wat.backend.services.NotificationServiceImpl;
 
 @RestController
 public class InvoiceController {
-    private NotificationService notificationService;
+    private final NotificationService notificationService;
 
     @Autowired
     public InvoiceController(NotificationServiceImpl notificationServiceImpl) {
@@ -28,6 +27,6 @@ public class InvoiceController {
         } catch (MailException e) {
             return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.OK);
         }
-        return new ResponseEntity<Response>(new Response("Invoice generated successfully!"), HttpStatus.OK);
+        return new ResponseEntity<>(new Response("Invoice generated successfully!"), HttpStatus.OK);
     }
 }

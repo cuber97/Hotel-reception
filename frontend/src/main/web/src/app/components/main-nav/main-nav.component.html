@@ -1,0 +1,22 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="opened">
+    <mat-toolbar>
+      Menu
+    </mat-toolbar>
+    <mat-nav-list>
+      <a *ngIf="role === 'WORKER'" mat-list-item routerLink="customers"><span class="menu-text">Customers</span><i class="pi pi-user"></i></a>
+      <a *ngIf="role === 'WORKER'" mat-list-item routerLink="invoice"><span class="menu-text">Invoices</span><i class="pi pi-file-pdf"></i></a>
+      <a *ngIf="role === 'WORKER' || role === 'CUSTOMER'" mat-list-item routerLink="reservation"><span class="menu-text">Reservation</span><i class="pi pi-bookmark"></i></a>
+      <a *ngIf="role === 'WORKER' || role === 'CUSTOMER'" mat-list-item routerLink="rooms"><span class="menu-text">Rooms</span><i class="pi pi-table"></i></a>
+      <a *ngIf="role === 'WORKER'" mat-list-item routerLink="timetable"><span class="menu-text">Timetable</span><i class="pi pi-calendar"></i></a>
+      <a *ngIf="role === 'WORKER' || role === 'CUSTOMER'" mat-list-item routerLink="complaint"><span class="menu-text">Complaints</span><i class="pi pi-exclamation-circle"></i></a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-header [logged]="true"></app-header>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

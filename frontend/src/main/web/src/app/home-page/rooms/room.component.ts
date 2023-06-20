@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Customer} from '../../models/customer';
-import {HttpService} from '../../http.service';
+import {HttpService} from '../../core/http.service';
 import {MessageService} from 'primeng/api';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Room} from '../../models/room';

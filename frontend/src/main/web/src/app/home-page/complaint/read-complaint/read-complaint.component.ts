@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Complaint} from '../../../models/complaints';
 import {Customer} from '../../../models/customer';
 import {NgForm} from '@angular/forms';
-import {HttpService} from '../../../http.service';
+import {HttpService} from '../../../core/http.service';
 import {MessageService} from 'primeng/api';
 import {ActivatedRoute, Router} from '@angular/router';
 

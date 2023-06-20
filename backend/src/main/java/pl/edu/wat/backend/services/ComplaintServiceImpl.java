@@ -1,5 +1,6 @@
 package pl.edu.wat.backend.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.backend.dtos.ComplaintDto;
@@ -15,28 +16,23 @@ import java.util.Optional;
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
     private final ComplaintRepository complaintRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public ComplaintServiceImpl(ComplaintRepository complaintRepository) {
+    public ComplaintServiceImpl(ComplaintRepository complaintRepository, ModelMapper modelMapper) {
         this.complaintRepository = complaintRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public List<ComplaintDto> getComplaints() {
         List<ComplaintDto> complaintDtos = new ArrayList<>();
         complaintRepository.findAll()
-                .forEach(complaint -> complaintDtos.add(new ComplaintDto(complaint.getComplaintId(),
-                        complaint.getCreationDate(),
-                        complaint.getLastUpdateDate(),
-                        complaint.getHasBeenRead(),
-                        complaint.getContent(),
-                        new CustomerDto(complaint.getCustomerEntity().getCustomerId(),
-                                complaint.getCustomerEntity().getFirstName(),
-                                complaint.getCustomerEntity().getLastName(),
-                                complaint.getCustomerEntity().getEmail(),
-                                complaint.getCustomerEntity().getPesel(),
-                                complaint.getCustomerEntity().getCreditCardNumber(),
-                                complaint.getCustomerEntity().getPhoneNumber()))));
+                .forEach(complaint -> {
+                    ComplaintDto complaintDto = this.modelMapper.map(complaint, ComplaintDto.class);
+                    complaintDto.setCustomer(this.modelMapper.map(complaint.getCustomerEntity(), CustomerDto.class));
+                    complaintDtos.add(complaintDto);
+                });
         return complaintDtos;
     }
 
@@ -46,18 +42,9 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaintRepository.findAll()
                 .forEach(complaint -> {
                     if (complaint.getCustomerEntity().getCustomerId().equals(customerId)) {
-                        complaintDtos.add(new ComplaintDto(complaint.getComplaintId(),
-                                complaint.getCreationDate(),
-                                complaint.getLastUpdateDate(),
-                                complaint.getHasBeenRead(),
-                                complaint.getContent(),
-                                new CustomerDto(complaint.getCustomerEntity().getCustomerId(),
-                                        complaint.getCustomerEntity().getFirstName(),
-                                        complaint.getCustomerEntity().getLastName(),
-                                        complaint.getCustomerEntity().getEmail(),
-                                        complaint.getCustomerEntity().getPesel(),
-                                        complaint.getCustomerEntity().getCreditCardNumber(),
-                                        complaint.getCustomerEntity().getPhoneNumber())));
+                        ComplaintDto complaintDto = this.modelMapper.map(complaint, ComplaintDto.class);
+                        complaintDto.setCustomer(this.modelMapper.map(complaint.getCustomerEntity(), CustomerDto.class));
+                        complaintDtos.add(complaintDto);
                     }
                 });
 
@@ -66,20 +53,8 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Override
     public boolean addComplaint(ComplaintDto complaintDto) {
-        ComplaintEntity complaintEntity = new ComplaintEntity();
-        complaintEntity.setComplaintId(complaintDto.getComplaintId());
-        complaintEntity.setCreationDate(complaintDto.getCreationDate());
-        complaintEntity.setLastUpdateDate(complaintDto.getLastUpdateDate());
-        complaintEntity.setHasBeenRead(complaintDto.getHasBeenRead());
-        complaintEntity.setContent(complaintDto.getContent());
-        complaintEntity.setCustomerEntity(new CustomerEntity(
-                complaintDto.getCustomer().getCustomerId(),
-                complaintDto.getCustomer().getFirstName(),
-                complaintDto.getCustomer().getLastName(),
-                complaintDto.getCustomer().getEmail(),
-                complaintDto.getCustomer().getPesel(),
-                complaintDto.getCustomer().getCreditCardNumber(),
-                complaintDto.getCustomer().getPhoneNumber()));
+        ComplaintEntity complaintEntity = this.modelMapper.map(complaintDto, ComplaintEntity.class);
+        complaintEntity.setCustomerEntity(this.modelMapper.map(complaintDto.getCustomer(), CustomerEntity.class));
         complaintRepository.save(complaintEntity);
         return true;
     }
@@ -91,38 +66,18 @@ public class ComplaintServiceImpl implements ComplaintService {
             return null;
         }
         ComplaintEntity complaintEntity = optionalComplaintEntity.get();
-        return new ComplaintDto(complaintEntity.getComplaintId(),
-                complaintEntity.getCreationDate(),
-                complaintEntity.getLastUpdateDate(),
-                complaintEntity.getHasBeenRead(),
-                complaintEntity.getContent(),
-                new CustomerDto(complaintEntity.getCustomerEntity().getCustomerId(),
-                        complaintEntity.getCustomerEntity().getFirstName(),
-                        complaintEntity.getCustomerEntity().getLastName(),
-                        complaintEntity.getCustomerEntity().getEmail(),
-                        complaintEntity.getCustomerEntity().getPesel(),
-                        complaintEntity.getCustomerEntity().getCreditCardNumber(),
-                        complaintEntity.getCustomerEntity().getPhoneNumber()));
+        ComplaintDto complaintDto = this.modelMapper.map(complaintEntity, ComplaintDto.class);
+        complaintDto.setCustomer(this.modelMapper.map(complaintEntity.getCustomerEntity(), CustomerDto.class));
+        return complaintDto;
     }
 
     @Override
     public void updateComplaint(ComplaintDto complaintDto) {
         Optional<ComplaintEntity> optionalComplaintEntity = complaintRepository.findById(complaintDto.getComplaintId());
         if (optionalComplaintEntity.isPresent()) {
-            ComplaintEntity complaintEntity = new ComplaintEntity();
-            complaintEntity.setComplaintId(complaintDto.getComplaintId());
-            complaintEntity.setCreationDate(complaintDto.getCreationDate());
-            complaintEntity.setLastUpdateDate(complaintDto.getLastUpdateDate());
-            complaintEntity.setHasBeenRead(complaintDto.getHasBeenRead());
-            complaintEntity.setContent(complaintDto.getContent());
-            complaintEntity.setCustomerEntity(new CustomerEntity(
-                    complaintDto.getCustomer().getCustomerId(),
-                    complaintDto.getCustomer().getFirstName(),
-                    complaintDto.getCustomer().getLastName(),
-                    complaintDto.getCustomer().getEmail(),
-                    complaintDto.getCustomer().getPesel(),
-                    complaintDto.getCustomer().getCreditCardNumber(),
-                    complaintDto.getCustomer().getPhoneNumber()));
+            ComplaintEntity complaintEntity = this.modelMapper.map(complaintDto, ComplaintEntity.class);
+            complaintEntity.setComplaintId(optionalComplaintEntity.get().getComplaintId());
+            complaintEntity.setCustomerEntity(this.modelMapper.map(complaintDto.getCustomer(), CustomerEntity.class));
             complaintRepository.save(complaintEntity);
         }
     }

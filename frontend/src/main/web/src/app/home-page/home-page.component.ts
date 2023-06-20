@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpService} from '../http.service';
+import {HttpService} from '../core/http.service';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
 @Component({
