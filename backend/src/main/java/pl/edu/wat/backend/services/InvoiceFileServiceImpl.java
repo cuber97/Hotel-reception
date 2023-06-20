@@ -136,7 +136,7 @@ public class InvoiceFileServiceImpl implements InvoiceFileService{
 
         addEmptyLine(preface, 4);
 
-        preface.add(getParagraph("Razem: " + (reservationDto.getPrice()) + " " + "PLN"));
+        preface.add(getParagraph("Razem: " + (reservationDto.getPrice()) + " " + reservationDto.getCurrency()));
 
         document.add(preface);
 
